@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-const DonorUpdate = ({ donor, onUpdate, setUpdateStatus }) => {
+const DonorUpdate = ({ donor, onUpdate, setMessage }) => {
     const API_URL = 'http://localhost:5000';
     const bloodTypes = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
 
@@ -24,14 +24,15 @@ const DonorUpdate = ({ donor, onUpdate, setUpdateStatus }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setUpdateStatus('');
+        setMessage('');
         try {
             const response = await axios.put(`${API_URL}/donors`, formData);
-            setUpdateStatus(response.data.message);
+            setMessage(`${response.data.message} - ${response.data.donor.DonorID}`);
+            console.log(response.data.message);
             // setSubmitSuccess(true);
         } catch (error) {
             console.log(`Error submitting form`, error);
-            setUpdateStatus(error.response?.data?.message);
+            setMessage(error.response?.data?.message);
             // setSubmitSuccess(false);
         } finally {
             onUpdate();

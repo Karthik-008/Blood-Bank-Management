@@ -7,7 +7,7 @@ const DonorList = () => {
     const [donor, setDonor] = useState(null);
     const [donors, setDonors] = useState([]);
     const [message, setMessage] = useState();
-    const [updateStatus, setUpdateStatus] = useState();
+    // const [updateStatus, setUpdateStatus] = useState();
     const API_URL = 'http://localhost:5000';
     // console.log(donors[0]);
 
@@ -27,10 +27,10 @@ const DonorList = () => {
     }, []);
 
     const handleUpdate = (e) => {
-        console.log(updateStatus);
+        console.log(message);
         setDonor(null);
         fetchDonors();
-        setMessage(updateStatus);    
+        // setMessage(updateStatus);    
     };
 
     const handleDelete = async (e, id) => {
@@ -39,8 +39,8 @@ const DonorList = () => {
 
         try {
             const response = await axios.delete(`${API_URL}/donors/${id}`);
-            setDonors(response.data.reviews);
-            setMessage(response.data.message);
+            // setDonor(response.data.donor);
+            setMessage(`${response.data.message} - ${response.data.donor.DonorID}`);
         } catch (error) {
             console.log(`Error -> ${error}`);
             setMessage(error.response?.data?.message);
@@ -51,7 +51,7 @@ const DonorList = () => {
     return (
         <Container className='mt-4'>
             {donor &&
-                <DonorUpdate donor={donor} onUpdate={handleUpdate} setUpdateStatus={setUpdateStatus}/>
+                <DonorUpdate donor={donor} onUpdate={handleUpdate} setMessage={setMessage}/>
             }
             <Row className='justify-content-center'>
                 <Col>
